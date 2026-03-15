@@ -66,6 +66,11 @@
       "require": "./dist/providers/llm/openai.js",
       "types": "./dist/providers/llm/openai.d.ts"
     },
+    "./providers/llm/anthropic": {
+      "import": "./dist/providers/llm/anthropic.mjs",
+      "require": "./dist/providers/llm/anthropic.js",
+      "types": "./dist/providers/llm/anthropic.d.ts"
+    },
     "./transports/base": {
       "import": "./dist/transports/base.mjs",
       "require": "./dist/transports/base.js",

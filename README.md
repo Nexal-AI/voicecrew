@@ -100,6 +100,7 @@ Then open `ws://localhost:3000` to stream the audio in real time.
 | Provider | Import | Notes |
 |---|---|---|
 | **OpenAI / OpenAI-compatible** | `voicecrew/providers/llm/openai` | Works with GPT-4o, GPT-4o-mini, Claude (via proxy), Kimi, Mistral, any OpenAI-compatible API |
+| **Anthropic Claude** | `voicecrew/providers/llm/anthropic` | Native Anthropic API support — Claude 3 Opus, Sonnet, Haiku, and Claude 3.5 |
 | **Ollama** *(coming soon)* | `voicecrew/providers/llm/ollama` | Fully local — Llama 3, Mistral, Phi-3, etc. |
 
 > 💡 **Fully local stack**: `KokoroTTS` + `WhisperSTT` (coming soon) + `OllamaLLM` (coming soon) = a complete voice crew with zero cloud API calls or costs.
@@ -433,6 +434,7 @@ const stt = new DeepgramSTT({
 
 ```typescript
 import { OpenAILLM } from 'voicecrew/providers/llm/openai';
+import { AnthropicLLM } from 'voicecrew/providers/llm/anthropic';
 
 // OpenAI
 const llm = new OpenAILLM({
@@ -445,6 +447,12 @@ const claude = new OpenAILLM({
   apiKey: process.env.ANTHROPIC_API_KEY,
   model: 'claude-3-haiku-20240307',
   baseURL: 'https://api.anthropic.com/v1',
+});
+
+// Anthropic Claude
+const claude = new AnthropicLLM({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+  model: 'claude-3-haiku-20240307',  // or claude-3-opus-20240229, claude-3-5-sonnet-20240620
 });
 
 // Ollama (local)
