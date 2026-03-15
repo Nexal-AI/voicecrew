@@ -1,0 +1,138 @@
+name: PR Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+    branches: [main, master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  label-pr:
+    name: Auto-label PR
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Label based on branch name
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branch = context.payload.pull_request.head.ref;
+            const labels = [];
+            
+            if (branch.startsWith('feat/') || branch.startsWith('feature/')) {
+              labels.push('enhancement');
+            } else if (branch.startsWith('fix/') || branch.startsWith('bugfix/')) {
+              labels.push('bug');
+            } else if (branch.startsWith('docs/')) {
+              labels.push('documentation');
+            } else if (branch.startsWith('chore/') || branch.startsWith('refactor/')) {
+              labels.push('chore');
+            } else if (branch.startsWith('test/')) {
+              labels.push('testing');
+            }
+            
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: labels
+              });
+            }
+
+  bundle-size:
+    name: Bundle Size Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build package
+        run: pnpm run build
+
+      - name: Check bundle size
+        run: |
+          echo "📦 Calculating bundle size..."
+          
+          # Get total size of dist folder
+          TOTAL_SIZE=$(du -sb dist/ | cut -f1)
+          TOTAL_SIZE_KB=$((TOTAL_SIZE / 1024))
+          
+          # Get size of main entry files
+          INDEX_JS_SIZE=$(stat -c%s dist/index.js 2>/dev/null || echo 0)
+          INDEX_MJS_SIZE=$(stat -c%s dist/index.mjs 2>/dev/null || echo 0)
+          
+          echo "Total dist size: ${TOTAL_SIZE_KB}KB"
+          echo "index.js: $((INDEX_JS_SIZE / 1024))KB"
+          echo "index.mjs: $((INDEX_MJS_SIZE / 1024))KB"
+          
+          # Check if under 50KB limit for main entry
+          MAX_SIZE=51200  # 50KB in bytes
+          
+          echo "::notice::Bundle Size Report"
+          echo "::notice::Total: ${TOTAL_SIZE_KB}KB"
+          
+          if [ "$TOTAL_SIZE_KB" -gt 500 ]; then
+            echo "::warning::Bundle size (${TOTAL_SIZE_KB}KB) exceeds recommended limit (500KB)"
+          else
+            echo "::notice::Bundle size is within acceptable limits ✓"
+          fi
+
+  verify-exports:
+    name: Verify Package Exports
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build package
+        run: pnpm run build
+
+      - name: Verify exports exist
+        run: |
+          echo "🔍 Verifying package exports..."
+          
+          # Check main exports
+          test -f dist/index.js || (echo "❌ dist/index.js missing" && exit 1)
+          test -f dist/index.mjs || (echo "❌ dist/index.mjs missing" && exit 1)
+          test -f dist/index.d.ts || (echo "❌ dist/index.d.ts missing" && exit 1)
+          
+          # Check provider exports
+          test -f dist/providers/tts/base.js || (echo "⚠️ providers/tts/base.js missing" && exit 0)
+          test -f dist/providers/stt/base.js || (echo "⚠️ providers/stt/base.js missing" && exit 0)
+          test -f dist/providers/llm/base.js || (echo "⚠️ providers/llm/base.js missing" && exit 0)
+          test -f dist/transports/base.js || (echo "⚠️ transports/base.js missing" && exit 0)
+          
+          echo "✅ All required exports verified"

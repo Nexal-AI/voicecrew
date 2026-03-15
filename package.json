@@ -1,0 +1,119 @@
+{
+  "name": "voicecrew",
+  "version": "0.1.0",
+  "description": "Multi-agent voice conversations, in code",
+  "license": "MIT",
+  "author": "Nexal AI <hello@nexal.com.au>",
+  "homepage": "https://github.com/Nexal-AI/voicecrew#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nexal-AI/voicecrew.git"
+  },
+  "keywords": [
+    "voice",
+    "ai",
+    "agents",
+    "multi-agent",
+    "tts",
+    "stt",
+    "llm",
+    "conversation"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./providers/tts/base": {
+      "import": "./dist/providers/tts/base.mjs",
+      "require": "./dist/providers/tts/base.js",
+      "types": "./dist/providers/tts/base.d.ts"
+    },
+    "./providers/tts/kokoro": {
+      "import": "./dist/providers/tts/kokoro.mjs",
+      "require": "./dist/providers/tts/kokoro.js",
+      "types": "./dist/providers/tts/kokoro.d.ts"
+    },
+    "./providers/tts/openai": {
+      "import": "./dist/providers/tts/openai.mjs",
+      "require": "./dist/providers/tts/openai.js",
+      "types": "./dist/providers/tts/openai.d.ts"
+    },
+    "./providers/stt/base": {
+      "import": "./dist/providers/stt/base.mjs",
+      "require": "./dist/providers/stt/base.js",
+      "types": "./dist/providers/stt/base.d.ts"
+    },
+    "./providers/stt/deepgram": {
+      "import": "./dist/providers/stt/deepgram.mjs",
+      "require": "./dist/providers/stt/deepgram.js",
+      "types": "./dist/providers/stt/deepgram.d.ts"
+    },
+    "./providers/llm/base": {
+      "import": "./dist/providers/llm/base.mjs",
+      "require": "./dist/providers/llm/base.js",
+      "types": "./dist/providers/llm/base.d.ts"
+    },
+    "./providers/llm/openai": {
+      "import": "./dist/providers/llm/openai.mjs",
+      "require": "./dist/providers/llm/openai.js",
+      "types": "./dist/providers/llm/openai.d.ts"
+    },
+    "./transports/base": {
+      "import": "./dist/transports/base.mjs",
+      "require": "./dist/transports/base.js",
+      "types": "./dist/transports/base.d.ts"
+    },
+    "./transports/websocket": {
+      "import": "./dist/transports/websocket.mjs",
+      "require": "./dist/transports/websocket.js",
+      "types": "./dist/transports/websocket.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsx watch src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitest/coverage-v8": "^1.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.5",
+    "tsup": "^8.0.2",
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.2",
+    "vitest": "^1.3.1"
+  },
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "typescript": {
+      "optional": true
+    }
+  }
+}
