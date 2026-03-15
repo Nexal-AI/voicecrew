@@ -279,7 +279,7 @@ const crew = new VoiceCrew(config: VoiceCrewConfig);
 | `topic` | `string` | — | The topic or prompt that kicks off the conversation |
 | `maxTurns` | `number` | `20` | Maximum number of turns before the meeting ends |
 | `turnTimeoutMs` | `number` | `30000` | Max ms an agent can hold the floor before yielding |
-| `systemPrompt` | `string` | — | Optional extra context injected into all agent system prompts |
+| `systemPrompt` | `string` | — | Fully replaces the default system message for all agents in this meeting. **Note:** This is a full replacement — it does not append to or extend the default system prompt. |
 
 #### Events
 
@@ -328,7 +328,7 @@ interface LLMConfig {
   provider: LLMProvider;   // e.g. new OpenAILLM({ model: 'gpt-4o-mini' })
   temperature?: number;    // 0–2, default 0.8
   maxTokens?: number;      // default 256 (keep responses concise for voice)
-  systemPrompt?: string;   // Additional per-agent system prompt context
+  systemPrompt?: string;   // Fully replaces the default system prompt for this agent. Note: this is a full replacement, not an append.
 }
 ```
 
