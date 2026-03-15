@@ -1,6 +1,15 @@
 // Voicecrew - Multi-agent voice conversations, in code
 // https://github.com/Nexal-AI/voicecrew
 
+// Provider errors (exported first so users can import for error handling)
+export {
+  ProviderError,
+  type ProviderErrorCode,
+  providerErrorFrom,
+  RETRYABLE_STATUS_CODES,
+  AUTH_ERROR_STATUS_CODES,
+} from './providers/errors.js';
+
 // Core classes
 export { VoiceCrew } from './crew.js';
 export { VoiceAgent } from './agent.js';
