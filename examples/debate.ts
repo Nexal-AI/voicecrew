@@ -110,7 +110,7 @@ of tech disappointments.`,
   console.log('-------------------------------------------');
 
   // Start the debate meeting
-  const meeting = crew.startMeeting({
+  const meeting = await crew.startMeeting({
     topic,
     maxTurns: 8,
     mode: 'round_robin',
@@ -136,11 +136,6 @@ of tech disappointments.`,
     console.log(`✅ Debate complete! ${totalTurns} turns, ${(durationMs / 1000).toFixed(1)}s`);
   });
 
-  // Handle WebSocket client connections
-  transport.onReceive((data) => {
-    console.log('📥 Client message:', data);
-  });
-
   // Run the debate
   try {
     await meeting.run();
@@ -151,8 +146,8 @@ of tech disappointments.`,
     console.log('');
     console.log('📊 Final Transcript:');
     const transcript = meeting.getTranscript();
-    for (const entry of transcript) {
-      console.log(`   ${entry.agentName}: ${entry.text.substring(0, 60)}...`);
+    for (const entry of transcript.turns) {
+      console.log(`   ${entry.agent.name}: ${entry.text.substring(0, 60)}...`);
     }
 
     // Keep server running briefly for any final messages

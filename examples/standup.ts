@@ -129,7 +129,7 @@ when there are conflicting demands.`,
   console.log('-------------------------------------------');
 
   // Start the standup meeting
-  const meeting = crew.startMeeting({
+  const meeting = await crew.startMeeting({
     topic: 'Daily standup: Sprint 23 progress on the Analytics Dashboard',
     maxTurns: 6,
     mode: 'round_robin',
@@ -167,7 +167,7 @@ Current velocity is good but there's a potential blocker with the API response t
     console.log('');
     console.log('📋 Standup Summary:');
     const transcript = meeting.getTranscript();
-    const updates = transcript.map((t) => `   • ${t.agentName}: ${t.text.substring(0, 80)}...`);
+    const updates = transcript.turns.map((t) => `   • ${t.agent.name}: ${t.text.substring(0, 80)}...`);
     console.log(updates.join('\n'));
 
     // Cleanup

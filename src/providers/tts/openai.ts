@@ -8,7 +8,7 @@ export interface OpenAITTSConfig extends TTSConfig {
 }
 
 export class OpenAITTS extends BaseTTSProvider {
-  readonly name = 'openai';
+  readonly name = 'openai-tts';
   private apiKey: string | undefined;
   private voice: string;
   private model: string;

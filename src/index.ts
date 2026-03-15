@@ -3,7 +3,7 @@
 
 // Core classes
 export { VoiceCrew } from './crew.js';
-export { VoiceAgent, VoiceAgentImpl } from './agent.js';
+export { VoiceAgent } from './agent.js';
 export { Meeting } from './meeting.js';
 
 // TTS Providers
@@ -27,7 +27,6 @@ export { WebSocketTransport } from './transports/websocket.js';
 export type {
   // Core types
   VoiceAgentConfig,
-  VoiceAgent as VoiceAgentType,
   MeetingConfig,
   MeetingTranscript,
   MeetingTurn,
@@ -37,6 +36,7 @@ export type {
   VoiceCrewConfig,
   Meeting as MeetingType,
   VoiceCrew as VoiceCrewType,
+  VoiceAgent as VoiceAgentInterface,
   
   // Provider types
   TTSProvider,

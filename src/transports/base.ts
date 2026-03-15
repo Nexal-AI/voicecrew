@@ -10,11 +10,11 @@ import type { Transport, TransportConfig } from '../types.js';
  * class MyTransport extends BaseTransport {
  *   readonly name = 'my-transport';
  *
- *   async start(): Promise<void> {
+ *   async connect(): Promise<void> {
  *     // Implementation
  *   }
  *
- *   async stop(): Promise<void> {
+ *   async disconnect(): Promise<void> {
  *     // Implementation
  *   }
  *
@@ -52,20 +52,20 @@ export abstract class BaseTransport implements Transport {
   }
 
   /**
-   * Starts the transport and begins accepting connections.
+   * Connects/starts the transport and begins accepting connections.
    *
    * @abstract
    * @returns A promise that resolves when the transport is started
    */
-  abstract start(): Promise<void>;
+  abstract connect(): Promise<void>;
 
   /**
-   * Stops the transport and closes all connections.
+   * Disconnects/stops the transport and closes all connections.
    *
    * @abstract
    * @returns A promise that resolves when the transport is stopped
    */
-  abstract stop(): Promise<void>;
+  abstract disconnect(): Promise<void>;
 
   /**
    * Broadcasts an event with data to all connected clients.

@@ -228,6 +228,8 @@ export interface Meeting {
   readonly agents: VoiceAgent[];
   readonly status: MeetingStatus;
   readonly currentTurn: number;
+  /** The maximum number of turns this meeting will run (defaults to 10). */
+  readonly maxTurns: number;
   readonly config: MeetingConfig;
   start(): Promise<MeetingTranscript>;
   end(): Promise<MeetingTranscript>;
@@ -250,6 +252,10 @@ export interface VoiceCrew {
   readonly transport: Transport | undefined;
   startMeeting(config: MeetingConfig): Promise<Meeting>;
   addAgent(agent: VoiceAgent): void;
-  removeAgent(name: string): boolean;
+  /**
+   * Remove an agent from the crew by object reference or name string.
+   * Returns true if an agent was removed, false if not found.
+   */
+  removeAgent(agentOrName: VoiceAgent | string): boolean;
   getAgent(name: string): VoiceAgent | undefined;
 }

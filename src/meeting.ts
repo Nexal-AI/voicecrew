@@ -63,6 +63,11 @@ export class Meeting extends EventEmitter implements IMeeting {
     return this._currentTurn;
   }
 
+  /** Returns the maxTurns limit for this meeting (defaults to 10). */
+  get maxTurns(): number {
+    return this.config.maxTurns ?? 10;
+  }
+
   async start(): Promise<MeetingTranscript> {
     if (this._status === 'active') {
       throw new Error('Meeting is already active');
@@ -111,11 +116,15 @@ export class Meeting extends EventEmitter implements IMeeting {
   }
 
   async run(): Promise<MeetingTranscript> {
-    await this.start();
+    // Guard: only call start() if the meeting hasn't been started yet.
+    // This allows callers to do either:
+    //   meeting.start(); meeting.run();   — start explicitly, then run turns
+    //   meeting.run();                    — run is self-contained
+    if (this._status === 'idle') {
+      await this.start();
+    }
 
-    const maxTurns = this.config.maxTurns ?? 10;
-
-    while (this._status === 'active' && this._currentTurn < maxTurns) {
+    while (this._status === 'active' && this._currentTurn < this.maxTurns) {
       await this.runTurn();
     }
 
@@ -134,8 +143,7 @@ export class Meeting extends EventEmitter implements IMeeting {
       throw new Error('Cannot run turn: meeting is not active');
     }
 
-    const maxTurns = this.config.maxTurns ?? 10;
-    if (this._currentTurn >= maxTurns) {
+    if (this._currentTurn >= this.maxTurns) {
       return;
     }
 

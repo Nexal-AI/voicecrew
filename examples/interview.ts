@@ -124,7 +124,7 @@ You speak naturally, occasionally using "um" or pausing to think (but keep it co
   console.log('-------------------------------------------');
 
   // Start the interview
-  const meeting = crew.startMeeting({
+  const meeting = await crew.startMeeting({
     topic: 'Backend Engineer Interview - Technical Screening',
     maxTurns: 8,
     mode: 'sequential', // Natural back-and-forth
@@ -155,12 +155,6 @@ The interview should feel natural, with Riley asking questions and Jamie respond
     console.log(`✅ Interview complete! ${totalTurns} exchanges, ${(durationMs / 1000).toFixed(1)}s`);
   });
 
-  // Handle transport messages (for external clients listening)
-  transport.onReceive((data) => {
-    // Clients could send instructions like "next topic" or "skip"
-    console.log('📥 External command received:', data);
-  });
-
   // Run the interview
   try {
     await meeting.run();
@@ -171,10 +165,10 @@ The interview should feel natural, with Riley asking questions and Jamie respond
     console.log('');
     console.log('📋 Interview Transcript:');
     const transcript = meeting.getTranscript();
-    for (const entry of transcript) {
-      const role = entry.agentName === 'Riley' ? '[I]' : '[C]';
+    for (const entry of transcript.turns) {
+      const role = entry.agent.name === 'Riley' ? '[I]' : '[C]';
       const text = entry.text.length > 70 ? entry.text.substring(0, 70) + '...' : entry.text;
-      console.log(`   ${role} ${entry.agentName}: ${text}`);
+      console.log(`   ${role} ${entry.agent.name}: ${text}`);
     }
 
     console.log('');

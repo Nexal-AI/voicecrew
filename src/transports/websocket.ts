@@ -20,12 +20,12 @@ export class WebSocketTransport extends BaseTransport {
     this.host = config.host ?? 'localhost';
   }
 
-  override async start(): Promise<void> {
+  override async connect(): Promise<void> {
     this.isRunning = true;
     // Mock implementation - in real version would start WebSocket server
   }
 
-  override async stop(): Promise<void> {
+  override async disconnect(): Promise<void> {
     this.isRunning = false;
     this.clients.clear();
     // Mock implementation - in real version would stop WebSocket server

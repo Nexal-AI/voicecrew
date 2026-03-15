@@ -19,7 +19,9 @@ export class VoiceCrew implements IVoiceCrew {
       this._agents.set(agent.name, agent);
     }
     
-    this._transport = config.transport;
+    if (config.transport !== undefined) {
+      this._transport = config.transport;
+    }
   }
 
   get agents(): VoiceAgent[] {
@@ -63,7 +65,17 @@ export class VoiceCrew implements IVoiceCrew {
     this._agents.set(agent.name, agent);
   }
 
-  removeAgent(name: string): boolean {
+  /**
+   * Remove an agent from the crew.
+   *
+   * Accepts either:
+   * - A `VoiceAgent` object — the agent is looked up by its `name` property.
+   * - A `string` name — the agent with that name is removed directly.
+   *
+   * Returns `true` if an agent was removed, `false` if no matching agent was found.
+   */
+  removeAgent(agentOrName: VoiceAgent | string): boolean {
+    const name = typeof agentOrName === 'string' ? agentOrName : agentOrName.name;
     if (!this._agents.has(name)) {
       return false;
     }
