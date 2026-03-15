@@ -84,9 +84,9 @@ export interface VoiceAgentConfig {
 
 /** Options for agent think() method */
 export interface AgentThinkOptions {
-  /** 
+  /**
    * Complete override of the default system prompt.
-   * When provided, this *replaces* the auto-generated system message 
+   * When provided, this *replaces* the auto-generated system message
    * (agent persona + context) entirely — it does not prepend or append.
    * Include any topic and conversation history context manually if needed.
    */
@@ -115,14 +115,14 @@ export type MeetingMode = 'round_robin' | 'sequential';
 export interface MeetingConfig {
   topic: string;
   maxTurns?: number;
-  /** 
+  /**
    * Complete override of the default system prompt.
-   * When provided, this *replaces* the agent's default system message 
+   * When provided, this *replaces* the agent's default system message
    * entirely — it does not prepend or append.
    * Include any topic, persona, and conversation history context manually.
    */
   systemPrompt?: string;
-  /** 
+  /**
    * Meeting mode: 'round_robin' cycles through agents, 'sequential' goes agent by agent.
    * Currently only round_robin is fully implemented.
    */

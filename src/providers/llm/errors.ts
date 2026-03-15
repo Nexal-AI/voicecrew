@@ -12,7 +12,7 @@
  * } catch (err) {
  *   if (err instanceof LLMError) {
  *     switch (err.code) {
- *       case 'TIMEOUT':       // retry with a longer timeout
+ *       case 'TIMEOUT':        // retry with a longer timeout
  *       case 'EMPTY_RESPONSE': // log and skip turn
  *       case 'API_ERROR':      // inspect err.statusCode for rate-limit vs server error
  *     }
@@ -49,7 +49,7 @@ export class LLMError extends Error {
    * HTTP status code, if the error originated from an API response.
    * Undefined for network errors, timeouts, and validation errors.
    */
-  readonly statusCode?: number;
+  readonly statusCode: number | undefined;
 
   /**
    * The underlying cause, if this error wraps another.
