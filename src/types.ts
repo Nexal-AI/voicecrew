@@ -21,7 +21,6 @@ export interface STTConfig {
 
 export interface LLMConfig {
   model?: string;
-  temperature?: number;
   maxTokens?: number;
   baseURL?: string;
   apiKey?: string;
@@ -78,8 +77,6 @@ export interface VoiceAgentConfig {
   stt?: {
     provider: STTProvider;
   };
-  /** Optional temperature setting for LLM responses (0.0 - 1.0) */
-  temperature?: number;
 }
 
 /** Options for agent think() method */
@@ -162,7 +159,6 @@ export interface MeetingTranscript {
 // ============================================
 
 export interface MeetingEvents {
-  turn: { agent: VoiceAgent; text: string; turnNumber: number };
   turn_start: { agent: VoiceAgent; turnNumber: number };
   turn_end: { agent: VoiceAgent; turnNumber: number; text: string };
   /**
@@ -172,7 +168,7 @@ export interface MeetingEvents {
    */
   turn_empty: { agent: VoiceAgent; turnNumber: number };
   meeting_start: { topic: string; agents: VoiceAgent[] };
-  meeting_end: { transcript: MeetingTranscript };
+  meeting_end: { transcript: MeetingTranscript; reason?: string };
   meeting_pause: { reason?: string };
   meeting_resume: void;
   error: { error: Error; context?: string };
@@ -228,8 +224,6 @@ export interface Meeting {
   readonly agents: VoiceAgent[];
   readonly status: MeetingStatus;
   readonly currentTurn: number;
-  /** The maximum number of turns this meeting will run (defaults to 10). */
-  readonly maxTurns: number;
   readonly config: MeetingConfig;
   start(): Promise<MeetingTranscript>;
   end(): Promise<MeetingTranscript>;

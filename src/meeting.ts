@@ -147,6 +147,14 @@ export class Meeting extends EventEmitter implements IMeeting {
       return;
     }
 
+    // Guard: if all agents have been removed, emit meeting_end with 'no_agents' reason
+    if (this.agents.length === 0) {
+      this._status = 'ended';
+      const transcript = this.getTranscript();
+      this.emit('meeting_end', { transcript, reason: 'no_agents' });
+      return;
+    }
+
     const agentIndex = this._currentTurn % this.agents.length;
     const agent = this.agents[agentIndex];
 

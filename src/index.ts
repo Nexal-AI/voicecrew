@@ -33,6 +33,7 @@ export type {
   MeetingStatus,
   MeetingEventName,
   MeetingEvents,
+  MeetingMode,
   VoiceCrewConfig,
   Meeting as MeetingType,
   VoiceCrew as VoiceCrewType,
@@ -55,4 +56,5 @@ export type {
   // Agent result types
   AgentThought,
   AgentSpeech,
+  AgentThinkOptions,
 } from './types.js';
