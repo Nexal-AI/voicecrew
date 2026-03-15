@@ -102,10 +102,17 @@ jobs:
       - name: Generate changelog
         id: changelog
         run: |
-          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
-          git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD~1)..HEAD || echo "- Initial release" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          if [ -n "$PREVIOUS_TAG" ]; then
+            CHANGELOG_CONTENT=$(git log --pretty=format:"- %s" "${PREVIOUS_TAG}..HEAD")
+          else
+            CHANGELOG_CONTENT="- Initial release"
+          fi
+          {
+            echo "CHANGELOG<<EOF"
+            echo "$CHANGELOG_CONTENT"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
