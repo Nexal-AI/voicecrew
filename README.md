@@ -2,12 +2,12 @@
 
 **Multi-agent voice conversations, in code.**
 
-[![npm version](https://img.shields.io/npm/v/voicecrew?style=flat-square&color=electric)](https://www.npmjs.com/package/voicecrew)
-[![License: MIT](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](./LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/Nexal-AI/voicecrew/ci.yml?style=flat-square&label=CI)](https://github.com/Nexal-AI/voicecrew/actions)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Bundle Size](https://img.shields.io/badge/bundle-%3C50KB-brightgreen?style=flat-square)](https://bundlephobia.com/package/voicecrew)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen?style=flat-square&logo=node.js)](https://nodejs.org/)
+[![npm version](https://img.shields.io/npm/v/voicecrew.svg)](https://www.npmjs.com/package/voicecrew)
+[![CI](https://img.shields.io/github/actions/workflow/status/Nexal-AI/voicecrew/ci.yml?branch=main&label=CI)](https://github.com/Nexal-AI/voicecrew/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Bundle Size](https://img.shields.io/badge/bundle-%3C50KB-brightgreen)](https://bundlephobia.com/package/voicecrew)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org/)
 
 ```bash
 npm install voicecrew
