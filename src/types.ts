@@ -142,8 +142,8 @@ export interface MeetingTurn {
 export interface MeetingTranscript {
   topic: string;
   turns: MeetingTurn[];
-  startTime?: Date;
-  endTime?: Date;
+  startTime: Date | undefined;
+  endTime: Date | undefined;
   totalTurns: number;
 }
 
@@ -223,18 +223,18 @@ export interface Meeting {
   on<K extends MeetingEventName>(
     event: K,
     handler: (data: MeetingEvents[K]) => void
-  ): this;
+  ): Meeting;
   off<K extends MeetingEventName>(
     event: K,
     handler: (data: MeetingEvents[K]) => void
-  ): this;
+  ): Meeting;
   getTranscript(): MeetingTranscript;
 }
 
 export interface VoiceCrew {
   readonly agents: VoiceAgent[];
   readonly transport?: Transport;
-  startMeeting(config: MeetingConfig): Meeting;
+  startMeeting(config: MeetingConfig): Promise<Meeting>;
   addAgent(agent: VoiceAgent): void;
   removeAgent(name: string): boolean;
   getAgent(name: string): VoiceAgent | undefined;
