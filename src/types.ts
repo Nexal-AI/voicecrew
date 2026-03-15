@@ -114,6 +114,14 @@ export type MeetingMode = 'round_robin' | 'sequential';
 
 export interface MeetingConfig {
   topic: string;
+  /**
+   * Agents participating in this meeting.
+   * When provided here, these agents are used instead of (or in addition to)
+   * any agents passed directly to the Meeting constructor.
+   * This allows `VoiceCrew.startMeeting()` to be called with a single config
+   * object literal — ergonomic and consistent with the rest of the API.
+   */
+  agents?: VoiceAgent[];
   maxTurns?: number;
   /**
    * Complete override of the default system prompt.
@@ -142,8 +150,10 @@ export interface MeetingTurn {
 export interface MeetingTranscript {
   topic: string;
   turns: MeetingTurn[];
-  startTime: Date | undefined;
-  endTime: Date | undefined;
+  /** ISO 8601 timestamp when the meeting started */
+  startTime?: Date | undefined;
+  /** ISO 8601 timestamp when the meeting ended */
+  endTime?: Date | undefined;
   totalTurns: number;
 }
 
@@ -155,8 +165,12 @@ export interface MeetingEvents {
   turn: { agent: VoiceAgent; text: string; turnNumber: number };
   turn_start: { agent: VoiceAgent; turnNumber: number };
   turn_end: { agent: VoiceAgent; turnNumber: number; text: string };
-  started: { meetingId: string; topic: string };
-  ended: { totalTurns: number; durationMs: number };
+  /**
+   * Fired when an agent produces an empty or whitespace-only response.
+   * Useful for test assertions and runtime guards — lets callers distinguish
+   * a skipped turn from a real error without catching an exception.
+   */
+  turn_empty: { agent: VoiceAgent; turnNumber: number };
   meeting_start: { topic: string; agents: VoiceAgent[] };
   meeting_end: { transcript: MeetingTranscript };
   meeting_pause: { reason?: string };
@@ -180,8 +194,8 @@ export interface TransportConfig {
 
 export interface Transport {
   readonly name: string;
-  start(): Promise<void>;
-  stop(): Promise<void>;
+  connect(): Promise<void>;
+  disconnect(): Promise<void>;
   broadcast(event: string, data: unknown): void;
   onConnection?(handler: (client: unknown) => void): void;
   onDisconnection?(handler: (client: unknown) => void): void;
@@ -223,17 +237,17 @@ export interface Meeting {
   on<K extends MeetingEventName>(
     event: K,
     handler: (data: MeetingEvents[K]) => void
-  ): Meeting;
+  ): this;
   off<K extends MeetingEventName>(
     event: K,
     handler: (data: MeetingEvents[K]) => void
-  ): Meeting;
+  ): this;
   getTranscript(): MeetingTranscript;
 }
 
 export interface VoiceCrew {
   readonly agents: VoiceAgent[];
-  readonly transport?: Transport;
+  readonly transport: Transport | undefined;
   startMeeting(config: MeetingConfig): Promise<Meeting>;
   addAgent(agent: VoiceAgent): void;
   removeAgent(name: string): boolean;
