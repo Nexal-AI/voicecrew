@@ -10,25 +10,26 @@ export interface OpenAITTSConfig extends TTSConfig {
 
 export class OpenAITTS extends BaseTTSProvider {
   readonly name = 'openai-tts';
-  private apiKey: string | undefined;
+  private apiKey: string;
   private voice: string;
   private model: string;
   private baseURL: string;
 
   constructor(config: OpenAITTSConfig = {}) {
     super(config);
-    this.apiKey = config.apiKey ?? process.env['OPENAI_API_KEY'];
+    const key = config.apiKey ?? process.env['OPENAI_API_KEY'];
+    if (!key) {
+      throw new Error(
+        'OpenAI API key is required. Pass apiKey in config or set OPENAI_API_KEY env var.',
+      );
+    }
+    this.apiKey = key;
     this.voice = config.voice ?? 'alloy';
     this.model = config.model ?? 'tts-1';
     this.baseURL = config.baseURL ?? 'https://api.openai.com/v1';
   }
 
   async synthesize(text: string): Promise<Buffer> {
-    if (!this.apiKey) {
-      throw new Error(
-        'OpenAI API key is required. Pass apiKey in config or set OPENAI_API_KEY env var.',
-      );
-    }
     if (!text || text.trim().length === 0) {
       throw new Error('Text cannot be empty');
     }
