@@ -92,6 +92,7 @@ Then open `ws://localhost:3000` to stream the audio in real time.
 | Provider | Import | Local | Free | Notes |
 |---|---|:---:|:---:|---|
 | **Deepgram** | `voicecrew/providers/stt/deepgram` | ❌ | ⚡ | Free tier available; best accuracy |
+| **Whisper** | `voicecrew/providers/stt/whisper` | ✅ | ⚡ | OpenAI API & local modes; zero cost when local |
 | **Whisper** *(coming soon)* | `voicecrew/providers/stt/whisper` | ✅ | ✅ | Runs locally via whisper.cpp |
 | **Web Speech API** *(coming soon)* | `voicecrew/providers/stt/webspeech` | ✅ | ✅ | Browser-native, no install needed |
 
@@ -102,7 +103,7 @@ Then open `ws://localhost:3000` to stream the audio in real time.
 | **OpenAI / OpenAI-compatible** | `voicecrew/providers/llm/openai` | Works with GPT-4o, GPT-4o-mini, Claude (via proxy), Kimi, Mistral, any OpenAI-compatible API |
 | **Ollama** *(coming soon)* | `voicecrew/providers/llm/ollama` | Fully local — Llama 3, Mistral, Phi-3, etc. |
 
-> 💡 **Fully local stack**: `KokoroTTS` + `WhisperSTT` (coming soon) + `OllamaLLM` (coming soon) = a complete voice crew with zero cloud API calls or costs.
+> 💡 **Fully local stack**: `KokoroTTS` + `WhisperSTT` + `OllamaLLM` (coming soon) = a complete voice crew with zero cloud API calls or costs.
 
 ---
 
