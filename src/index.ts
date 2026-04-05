@@ -14,6 +14,7 @@ export { OpenAITTS } from './providers/tts/openai.js';
 // STT Providers
 export { BaseSTTProvider } from './providers/stt/base.js';
 export { DeepgramSTT } from './providers/stt/deepgram.js';
+export { WhisperSTT } from './providers/stt/whisper.js';
 
 // LLM Providers
 export { BaseLLMProvider } from './providers/llm/base.js';
